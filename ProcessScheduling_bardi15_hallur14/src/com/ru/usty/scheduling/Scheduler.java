@@ -124,105 +124,24 @@ public class Scheduler {
                 }
                 break;
             case SRT:   //Shortest remaining time
-//                ArrayList<Integer> L = new ArrayList<Integer>();
-//
-//
-//                if (L.size() == 0) {
-//                    L.add(processID);
-//                    processExecution.switchToProcess(processID);
-//                } else {
-//                    for(int i = 0; i < L.size(); i++) {
-//                        if (getRemainingTime(L.get(i)) < getRemainingTime(processID)) {
-//                            processExecution.switchToProcess(L.get(i));
-//                        }
-//                    }
-//
-//                }
+                if(priorityQueue.isEmpty()) {
+                    priorityQueue.add(processID);
+                    processExecution.switchToProcess(processID);
+                }
+                else  {
+                    priorityQueue.add(processID);
+                    int lowest = processID;
+                    for (Integer e : priorityQueue) {
+                        long eLow = getRemainingTime(e);
+                        long gLow = getRemainingTime(lowest);
+                        if (getRemainingTime(e) < getRemainingTime(lowest)) {
+                            lowest = e;
+                        }
+                        processExecution.switchToProcess(lowest);
+                    }
 
-                priorityQueue.add(processID);
-                processExecution.switchToProcess(priorityQueue.peek());
-
-//                int currProcessID = 0;
-//                if(priorityQueue.isEmpty()){
-//                    priorityQueue.add(processID);
-//                    currProcessID = processID;
-//                    processExecution.switchToProcess(processID);
-//                } else {
-//                    System.out.println("priorityQueue: " + priorityQueue.size());
-//                    priorityQueue.add(processID);
-//                    processExecution.switchToProcess(processID);
-                    //if (priorityQueue.peek() != currProcessID) {
-                    //    processExecution.switchToProcess(processID);
-                    // }
-//                    if (priorityQueue.peek() != currProcessID) {
-//                        final int cPrs = currProcessID;
-//                        currProcessID = processID;
-//                        processExecution.switchToProcess(processID);
-//                        priorityQueue.removeIf(p -> p == cPrs);
-//                    } else {
-//                        priorityQueue.add(processID);
-//                    }
-//                }
-
-                    //                SPNinfo SRTInfo = new SPNinfo(processID, (processExecution.getProcessInfo(processID).totalServiceTime - processExecution.getProcessInfo(processID).elapsedExecutionTime));
-
-//                if(priorityQueue.isEmpty()){
-//                    priorityQueue.add(processID);
-//                    currProcessID = processID;
-//                    processExecution.switchToProcess(processID);
-//
-//                } else {
-//                    if(((processExecution.getProcessInfo(currProcessID).totalServiceTime -
-//                            processExecution.getProcessInfo(currProcessID).elapsedExecutionTime)
-//                            > processExecution.getProcessInfo(processID).totalServiceTime)){
-//
-//                        processExecution.switchToProcess(processID);
-//                        priorityQueue.add(processID);
-//
-//                        int prevID = currProcessID;
-//                        currProcessID = processID;
-//                        if(prevID >= 0){
-//                            if(priorityQueue.removeIf(p -> p == prevID)){
-//                                priorityQueue.add(prevID);
-//                            }
-//                        }
-//                    } else{
-//                        priorityQueue.add(processID);
-//                    }
-//                }
-                    break;
-
-
-//                SPNinfo SRTInfo = new SPNinfo(processID, (processExecution.getProcessInfo(processID).totalServiceTime - processExecution.getProcessInfo(processID).elapsedExecutionTime));
-//
-//                if(priorityQueue.isEmpty()){
-//                    priorityQueue.add(SRTInfo);
-//                    currProcessID = processID;
-//                    processExecution.switchToProcess(processID);
-//
-//                } else {
-//                    if(((processExecution.getProcessInfo(currProcessID).totalServiceTime -
-//                            processExecution.getProcessInfo(currProcessID).elapsedExecutionTime)
-//                            > processExecution.getProcessInfo(processID).totalServiceTime)){
-//
-//                        processExecution.switchToProcess(processID);
-//                        priorityQueue.add(SRTInfo);
-//
-//                        int prevID = currProcessID;
-//                        currProcessID = processID;
-//                        if(prevID >= 0){
-//                            if(priorityQueue.removeIf(p -> p.getId() == prevID)){
-//                                SPNinfo updateSRT = new SPNinfo(prevID, (processExecution.getProcessInfo(prevID).totalServiceTime - processExecution.getProcessInfo(prevID).elapsedExecutionTime));
-//                                priorityQueue.add(updateSRT);
-//                            }
-//                        }
-//                    } else{
-//                        priorityQueue.add(SRTInfo);
-//                    }
-//
-//                }
-                    // break;
-              //  };
+                }
+                break;
             case HRRN:  //Highest response ratio next
 //                HRRNinfo HRRNinfo = new HRRNinfo(processID, processExecution.getProcessInfo(processID));
 //                processIDs.add(processID);
@@ -313,8 +232,6 @@ public class Scheduler {
     }
 
     public long getRemainingTime(int id) {
-        //                long _srt_a = pe.getProcessInfo(o1).totalServiceTime - pe.getProcessInfo(o1).elapsedExecutionTime;
-
         return processExecution.getProcessInfo(id).totalServiceTime - processExecution.getProcessInfo(id).elapsedExecutionTime;
     }
 }
