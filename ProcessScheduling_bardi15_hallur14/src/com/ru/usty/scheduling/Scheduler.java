@@ -72,7 +72,7 @@ public class Scheduler {
                 break;
             case SRT:   //Shortest remaining time
                 System.out.println("Starting new scheduling task: Shortest remaining time");
-                this.priorityQueue = new PriorityQueue(new ProcessComparator(Policy.SRT, processExecution));
+                this.priorityQueue = new PriorityQueue(new ProcessComparator(Policy.SPN, processExecution));
                 //this.priorityQueue = new PriorityQueue<>();
                 break;
             case HRRN:  //Highest response ratio next
@@ -124,20 +124,73 @@ public class Scheduler {
                 }
                 break;
             case SRT:   //Shortest remaining time
-                int currProcessID = 0;
-                if(priorityQueue.isEmpty()){
-                    priorityQueue.add(processID);
-                    currProcessID = processID;
-                    processExecution.switchToProcess(processID);
-                } else {
-                    System.out.println("priorityQueue: " + priorityQueue.size());
-                    priorityQueue.add(processID);
-                    if (priorityQueue.peek() != currProcessID) {
-                        processExecution.switchToProcess(processID);
-                    }
-                }
-                break;
+//                ArrayList<Integer> L = new ArrayList<Integer>();
+//
+//
+//                if (L.size() == 0) {
+//                    L.add(processID);
+//                    processExecution.switchToProcess(processID);
+//                } else {
+//                    for(int i = 0; i < L.size(); i++) {
+//                        if (getRemainingTime(L.get(i)) < getRemainingTime(processID)) {
+//                            processExecution.switchToProcess(L.get(i));
+//                        }
+//                    }
+//
+//                }
 
+                priorityQueue.add(processID);
+                processExecution.switchToProcess(priorityQueue.peek());
+
+//                int currProcessID = 0;
+//                if(priorityQueue.isEmpty()){
+//                    priorityQueue.add(processID);
+//                    currProcessID = processID;
+//                    processExecution.switchToProcess(processID);
+//                } else {
+//                    System.out.println("priorityQueue: " + priorityQueue.size());
+//                    priorityQueue.add(processID);
+//                    processExecution.switchToProcess(processID);
+                    //if (priorityQueue.peek() != currProcessID) {
+                    //    processExecution.switchToProcess(processID);
+                    // }
+//                    if (priorityQueue.peek() != currProcessID) {
+//                        final int cPrs = currProcessID;
+//                        currProcessID = processID;
+//                        processExecution.switchToProcess(processID);
+//                        priorityQueue.removeIf(p -> p == cPrs);
+//                    } else {
+//                        priorityQueue.add(processID);
+//                    }
+//                }
+
+                    //                SPNinfo SRTInfo = new SPNinfo(processID, (processExecution.getProcessInfo(processID).totalServiceTime - processExecution.getProcessInfo(processID).elapsedExecutionTime));
+
+//                if(priorityQueue.isEmpty()){
+//                    priorityQueue.add(processID);
+//                    currProcessID = processID;
+//                    processExecution.switchToProcess(processID);
+//
+//                } else {
+//                    if(((processExecution.getProcessInfo(currProcessID).totalServiceTime -
+//                            processExecution.getProcessInfo(currProcessID).elapsedExecutionTime)
+//                            > processExecution.getProcessInfo(processID).totalServiceTime)){
+//
+//                        processExecution.switchToProcess(processID);
+//                        priorityQueue.add(processID);
+//
+//                        int prevID = currProcessID;
+//                        currProcessID = processID;
+//                        if(prevID >= 0){
+//                            if(priorityQueue.removeIf(p -> p == prevID)){
+//                                priorityQueue.add(prevID);
+//                            }
+//                        }
+//                    } else{
+//                        priorityQueue.add(processID);
+//                    }
+//                }
+                    break;
 
 
 //                SPNinfo SRTInfo = new SPNinfo(processID, (processExecution.getProcessInfo(processID).totalServiceTime - processExecution.getProcessInfo(processID).elapsedExecutionTime));
@@ -168,7 +221,8 @@ public class Scheduler {
 //                    }
 //
 //                }
-               // break;
+                    // break;
+              //  };
             case HRRN:  //Highest response ratio next
 //                HRRNinfo HRRNinfo = new HRRNinfo(processID, processExecution.getProcessInfo(processID));
 //                processIDs.add(processID);
@@ -213,19 +267,27 @@ public class Scheduler {
                 }
                 break;
             case SRT:   //Shortest remaining time
+                System.out.println("count before: " + priorityQueue.size());
                 priorityQueue.removeIf(p -> p == processID);
-                if(!priorityQueue.isEmpty()){
-                    currProcessID = priorityQueue.peek();
-                    processExecution.switchToProcess(currProcessID);
+                System.out.println("count after: " + priorityQueue.size());
 
-                } else {
-                    currProcessID = -1;
-                }
-                priorityQueue.removeIf(p -> p == processID);
                 if(!priorityQueue.isEmpty()){
                     processExecution.switchToProcess(priorityQueue.peek());
                 }
                 break;
+//                priorityQueue.removeIf(p -> p == processID);
+//                if(!priorityQueue.isEmpty()){
+//                    currProcessID = priorityQueue.peek();
+//                    processExecution.switchToProcess(currProcessID);
+//
+//                } else {
+//                    currProcessID = -1;
+//                }
+//                priorityQueue.removeIf(p -> p == processID);
+//                if(!priorityQueue.isEmpty()){
+//                    processExecution.switchToProcess(priorityQueue.peek());
+//                }
+//                break;
             case HRRN:  //Highest response ratio next
 //                priorityHRRNQueue.removeIf(p -> p.getId() == processID);
 //                processIDs.remove(Integer.valueOf(processID));
@@ -248,5 +310,11 @@ public class Scheduler {
         System.out.println("Finished process " + processID);
 
 
+    }
+
+    public long getRemainingTime(int id) {
+        //                long _srt_a = pe.getProcessInfo(o1).totalServiceTime - pe.getProcessInfo(o1).elapsedExecutionTime;
+
+        return processExecution.getProcessInfo(id).totalServiceTime - processExecution.getProcessInfo(id).elapsedExecutionTime;
     }
 }

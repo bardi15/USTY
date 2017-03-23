@@ -41,15 +41,13 @@ public class ProcessComparator implements Comparator<Integer> {
 //                long _srt_ax = pe.getProcessInfo(o1).totalServiceTime;
 //                long _srt_b = pe.getProcessInfo(o2).totalServiceTime;
 //                System.out.println("a is:" + a + ", o1: " + o1 + ", b is: " + b + ", o2: " + o2);
-                if (_srt_a > _srt_a) {
+                if (_srt_a > _srt_b) {
                     return -1;
-                } else if (_srt_a <= _srt_a) {
+                } else if (_srt_a < _srt_b) {
                     return 1;
+                } else {
+                    return 0;
                 }
-                System.out.println("getProcessInfo(o1).elapsedExecutionTime: " + pe.getProcessInfo(o1).elapsedExecutionTime +
-                    "\npe.getProcessInfo(o1).totalServiceTime" + pe.getProcessInfo(o1).totalServiceTime +
-                        "\ngetProcessInfo(o2).elapsedExecutionTime: " + pe.getProcessInfo(o2).elapsedExecutionTime +
-                        "\npe.getProcessInfo(o2).totalServiceTime" + pe.getProcessInfo(o2).totalServiceTime + "\n++++++");
                 //return 0;
                 //break;
             case HRRN:
