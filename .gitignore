@@ -15,10 +15,9 @@ hs_err_pid*
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-ProcessScheduling_bardi15_hallur14/.idea/*.
-ProcessScheduling_bardi15_hallur14/.idea/misc.xml
-ProcessScheduling_bardi15_hallur14/.idea/workspace.xml
-ProcessScheduling_bardi15_hallur14/.idea/kotlinc.xml
+f/**
+
+**/.idea/**
 
 
 # User-specific stuff:
