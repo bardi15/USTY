@@ -15,6 +15,10 @@ hs_err_pid*
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 ProcessScheduling_bardi15_hallur14/.idea/*.
+ProcessScheduling_bardi15_hallur14/.idea/misc.xml
+ProcessScheduling_bardi15_hallur14/.idea/workspace.xml
+ProcessScheduling_bardi15_hallur14/.idea/kotlinc.xml
+
 
 # User-specific stuff:
 ProcessScheduling_bardi15_hallur14/.idea/**/workspace.xml
