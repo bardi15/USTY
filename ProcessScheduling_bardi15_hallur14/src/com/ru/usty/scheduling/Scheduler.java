@@ -11,6 +11,7 @@ public class Scheduler
     ProcessExecution processExecution;
     Policy policy;
     int quantum;
+    int currentProcess;
 
     Queue<Integer> processQueue;
 
@@ -21,6 +22,7 @@ public class Scheduler
     public Scheduler(ProcessExecution processExecution)
     {
         this.processExecution = processExecution;
+        currentProcess = -1;
 
         /**
          * Add general initialization code here (if needed)
@@ -88,10 +90,14 @@ public class Scheduler
      */
     public void processAdded(int processID)
     {
-        processExecution.switchToProcess(processID);
-        /**
-         * Add scheduling code here
-         */
+        if(this.currentProcess == -1)
+        {
+            processExecution.switchToProcess(processID);
+        }
+        else
+        {
+
+        }
 
     }
 
