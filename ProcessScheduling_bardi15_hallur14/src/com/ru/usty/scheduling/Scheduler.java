@@ -77,7 +77,7 @@ public class Scheduler {
                 break;
             case HRRN:  //Highest response ratio next
                 System.out.println("Starting new scheduling task: Highest response ratio next");
-                //this.PriorityQueue = new PriorityQueue<>();
+                this.priorityQueue = new PriorityQueue(new ProcessComparator(Policy.HRRN, processExecution));
                 break;
             case FB:    //Feedback
                 System.out.println("Starting new scheduling task: Feedback, quantum = " + quantum);
@@ -142,7 +142,16 @@ public class Scheduler {
 
                 }
                 break;
-            case HRRN:  //Highest response ratio next
+            case HRRN: //Highest response ratio next
+                processIDs.add(processID);
+                if(priorityQueue.isEmpty()){
+                    priorityQueue.add(processID);
+                    processExecution.switchToProcess(processID);
+                } else {
+                    priorityQueue.add(processID);
+                }
+                break;
+
 //                HRRNinfo HRRNinfo = new HRRNinfo(processID, processExecution.getProcessInfo(processID));
 //                processIDs.add(processID);
 //                if(priorityHRRNQueue.isEmpty()){
@@ -194,20 +203,20 @@ public class Scheduler {
                     processExecution.switchToProcess(priorityQueue.peek());
                 }
                 break;
-//                priorityQueue.removeIf(p -> p == processID);
-//                if(!priorityQueue.isEmpty()){
-//                    currProcessID = priorityQueue.peek();
-//                    processExecution.switchToProcess(currProcessID);
-//
-//                } else {
-//                    currProcessID = -1;
-//                }
-//                priorityQueue.removeIf(p -> p == processID);
-//                if(!priorityQueue.isEmpty()){
-//                    processExecution.switchToProcess(priorityQueue.peek());
-//                }
-//                break;
             case HRRN:  //Highest response ratio next
+                priorityQueue.removeIf(p -> p == processID);
+                processIDs.remove(Integer.valueOf(processID));
+                priorityQueue.clear();
+
+                for (int i = 0; i <  processIDs.size(); i++) {
+                    priorityQueue.add(processIDs.get(i));
+                }
+
+                if(!priorityQueue.isEmpty()){
+                    processExecution.switchToProcess(priorityQueue.peek());
+                }
+
+
 //                priorityHRRNQueue.removeIf(p -> p.getId() == processID);
 //                processIDs.remove(Integer.valueOf(processID));
 //

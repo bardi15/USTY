@@ -15,6 +15,8 @@ public class ProcessComparator implements Comparator<Integer> {
 
     @Override
     public int compare(Integer o1, Integer o2) {
+        ProcessInfo pA = pe.getProcessInfo(o1);
+        ProcessInfo pB = pe.getProcessInfo(o2);
         switch (this.pol) {
             case RR:
                 //TODO
@@ -22,8 +24,8 @@ public class ProcessComparator implements Comparator<Integer> {
                 //break;
             case SPN:
                 //TODO
-                long a = pe.getProcessInfo(o1).totalServiceTime;
-                long b = pe.getProcessInfo(o2).totalServiceTime;
+                long a = pA.totalServiceTime;
+                long b = pB.totalServiceTime;
                 System.out.println("a is:" + a + ", o1: " + o1 + ", b is: " + b + ", o2: " + o2);
                 if (a < b) {
                     return -1;
@@ -35,8 +37,10 @@ public class ProcessComparator implements Comparator<Integer> {
             case SRT:
                 //TODO
                 //TODO
-                long _srt_a = pe.getProcessInfo(o1).totalServiceTime - pe.getProcessInfo(o1).elapsedExecutionTime;
-                long _srt_b = pe.getProcessInfo(o2).totalServiceTime - pe.getProcessInfo(o2).elapsedExecutionTime;
+               // ProcessInfo pA = pe.getProcessInfo(o1);
+               // ProcessInfo pB = pe.getProcessInfo(o2);
+                long _srt_a = pA.totalServiceTime - pA.elapsedExecutionTime;
+                long _srt_b = pB.totalServiceTime - pB.elapsedExecutionTime;
 //                long _srt_a = pe.getProcessInfo(o1).elapsedExecutionTime;
 //                long _srt_ax = pe.getProcessInfo(o1).totalServiceTime;
 //                long _srt_b = pe.getProcessInfo(o2).totalServiceTime;
@@ -51,8 +55,16 @@ public class ProcessComparator implements Comparator<Integer> {
                 //return 0;
                 //break;
             case HRRN:
-                //TODO
-                return 0;
+                // R = W + S / S
+                long a_t = (pA.elapsedWaitingTime + pA.totalServiceTime) / pA.totalServiceTime;
+                long b_t = (pB.elapsedWaitingTime + pB.totalServiceTime) / pB.totalServiceTime;
+                if (a_t > b_t) {
+                    return -1;
+                } else if (a_t < b_t) {
+                    return 1;
+                } else {
+                    return 0;
+                }
                //break;
         }
         return 0;
