@@ -88,7 +88,7 @@ public class Scheduler
      */
     public void processAdded(int processID)
     {
-
+        processExecution.switchToProcess(processID);
         /**
          * Add scheduling code here
          */
@@ -100,7 +100,7 @@ public class Scheduler
      */
     public void processFinished(int processID)
     {
-
+        System.out.println("FINISHED");
         /**
          * Add scheduling code here
          */
