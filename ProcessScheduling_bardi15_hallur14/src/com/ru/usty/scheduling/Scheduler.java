@@ -70,7 +70,7 @@ public class Scheduler {
                 break;
             case FB:    //Feedback
                 System.out.println("Starting new scheduling task: Feedback, quantum = " + quantum);
-                this._fb = new fb(processExecution);
+                this._fb = new fb(processExecution, quantum);
                 break;
         }
 
