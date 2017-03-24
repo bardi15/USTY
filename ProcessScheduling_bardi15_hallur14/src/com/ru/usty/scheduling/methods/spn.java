@@ -12,7 +12,6 @@ public class spn {
     public spn(ProcessExecution processExecution) {
         priorityQueue = new PriorityQueue(new ProcessComparator(Policy.SPN, processExecution));
         p = processExecution;
-
     }
 
     public void add(int processID) {

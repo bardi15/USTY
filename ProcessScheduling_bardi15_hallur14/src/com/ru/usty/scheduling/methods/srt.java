@@ -10,7 +10,7 @@ public class srt {
     private PriorityQueue<Integer> priorityQueue;
     private ProcessExecution p;
     public srt(ProcessExecution processExecution) {
-        priorityQueue = new PriorityQueue(new ProcessComparator(Policy.SPN, processExecution));
+        priorityQueue = new PriorityQueue(new ProcessComparator(Policy.SRT, processExecution));
         p = processExecution;
     }
 

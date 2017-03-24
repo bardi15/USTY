@@ -11,7 +11,6 @@ public class fcfs {
     public fcfs(ProcessExecution processExecution) {
         processQueue = new LinkedList<>();
         p = processExecution;
-
     }
 
     public void add(int processID) {

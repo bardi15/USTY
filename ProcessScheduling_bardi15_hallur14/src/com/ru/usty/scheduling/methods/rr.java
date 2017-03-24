@@ -28,11 +28,11 @@ public class rr {
     }
 
     public void finish(int processID) {
+        System.out.println("finished");
         processQueue.remove(processID);
         runningProcess = false;
         if(!processQueue.isEmpty()) {
-            int id = processQueue.element();
-            Thread thread = this.sleep(id);
+            Thread thread = this.sleep(processQueue.element());
             thread.start();
             runningProcess = true;
         }
@@ -46,7 +46,6 @@ public class rr {
                     processQueue.remove(pid);
                     processQueue.add(pid);
                     Thread.sleep(quantum);
-
                 } catch (InterruptedException e) {
                     System.out.println("Failure in RR method");
                     e.printStackTrace();
