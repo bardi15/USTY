@@ -2,10 +2,7 @@ package com.ru.usty.scheduling;
 import com.ru.usty.scheduling.methods.*;
 import com.ru.usty.scheduling.process.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import com.ru.usty.scheduling.process.ProcessExecution;
@@ -22,6 +19,7 @@ public class Scheduler {
     private hrrn _h;
     private rr _r;
     private fb _fb;
+
 
     /**
      * DO NOT CHANGE DEFINITION OF OPERATION
@@ -41,7 +39,6 @@ public class Scheduler {
 
         this.policy = policy;
         this.quantum = quantum;
-
         /**
          * Add general initialization code here (if needed)
          */
@@ -83,7 +80,6 @@ public class Scheduler {
      * DO NOT CHANGE DEFINITION OF OPERATION
      */
     public void processAdded(int processID) {
-
         switch(policy) {
             case FCFS:  //First-come-first-served
                 _f.add(processID);
@@ -132,8 +128,6 @@ public class Scheduler {
                 break;
         }
         System.out.println("Finished process " + processID);
-
-
     }
 
 }

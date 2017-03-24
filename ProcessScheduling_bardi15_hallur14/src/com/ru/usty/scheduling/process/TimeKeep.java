@@ -8,6 +8,8 @@ public class TimeKeep {
     private long sT;
     private long cT;
 
+    public TimeKeep() {
+    }
 
     public void start() {
         sT = getTime();

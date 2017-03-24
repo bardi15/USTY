@@ -1,14 +1,17 @@
 package com.ru.usty.scheduling.methods;
 
 import com.ru.usty.scheduling.process.ProcessExecution;
+import com.ru.usty.scheduling.process.TimeKeep;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 public class fcfs {
     private Queue<Integer> processQueue;
     private ProcessExecution p;
-    public fcfs(ProcessExecution processExecution) {
+    public fcfs(ProcessExecution processExecution ) {
         processQueue = new LinkedList<>();
         p = processExecution;
     }
