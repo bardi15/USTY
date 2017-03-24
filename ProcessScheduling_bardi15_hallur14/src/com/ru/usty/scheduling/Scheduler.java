@@ -15,7 +15,7 @@ public class Scheduler {
     Policy policy;
     int quantum;
     int currProcessID;
-
+    boolean runningProcess = false;
     Queue<Integer> processQueue;
  //   PriorityQueue<SPNinfo>   priorityQueue;
  //   PriorityQueue<HRRNinfo> priorityHRRNQueue;
@@ -24,7 +24,7 @@ public class Scheduler {
 
     ArrayList<Integer> processIDs;
 
-    Semaphore processRunning;
+    //Semaphore processRunning;
 //    private ProcessQueue priorityQueue;
 
 
@@ -46,9 +46,6 @@ public class Scheduler {
 
         this.policy = policy;
         this.quantum = quantum;
-
-        processQueue = new LinkedList<>();
-
         this.processIDs = new ArrayList<>();
 
         /**
@@ -58,13 +55,15 @@ public class Scheduler {
         switch(policy) {
             case FCFS:  //First-come-first-served
                 System.out.println("Starting new scheduling task: First-come-first-served");
-                /**
+                processQueue = new LinkedList<>();
+            /**
                  * Add your policy specific initialization code here (if needed)
                  */
                 break;
             case RR:    //Round robin
                 System.out.println("Starting new scheduling task: Round robin, quantum = " + quantum);
-                this.processRunning = new Semaphore(1,true);
+                processQueue = new LinkedList<Integer>();
+            //this.processRunning = new Semaphore(1,true);
                 break;
             case SPN:   //Shortest process next
                 System.out.println("Starting new scheduling task: Shortest process next");
@@ -92,7 +91,23 @@ public class Scheduler {
          */
 
     }
+    public Thread sleeper(int qnt, int pid) {
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    processExecution.switchToProcess(pid);
+                    processQueue.remove(pid);
+                    processQueue.add(pid);
+                    Thread.sleep(qnt);
 
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+        return thread;
+    }
     /**
      * DO NOT CHANGE DEFINITION OF OPERATION
      */
@@ -106,14 +121,17 @@ public class Scheduler {
                 }
                 break;
             case RR:    //Round robin
-                try {
-                    processRunning.acquire();
-                    processIDs.add(processID);
-                    processRunning.release();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                processQueue.add(processID);
+                if(!runningProcess){
+                    processExecution.switchToProcess(processID);
+                    runningProcess = true;
                 }
+                Thread thread = this.sleeper(quantum, processQueue.element());
+                thread.start();
+
                 break;
+
+
             case SPN:   //Shortest process next
                 //SPNinfo processInfo = new SPNinfo(processID, processExecution.getProcessInfo(processID).totalServiceTime);
                 if(priorityQueue.isEmpty()){
@@ -151,16 +169,6 @@ public class Scheduler {
                     priorityQueue.add(processID);
                 }
                 break;
-
-//                HRRNinfo HRRNinfo = new HRRNinfo(processID, processExecution.getProcessInfo(processID));
-//                processIDs.add(processID);
-//                if(priorityHRRNQueue.isEmpty()){
-//                    priorityHRRNQueue.add(HRRNinfo);
-//                    processExecution.switchToProcess(processID);
-//                } else {
-//                    priorityHRRNQueue.add(HRRNinfo);
-//                }
-//                break;
             case FB:    //Feedback
 
                 break;
@@ -180,13 +188,15 @@ public class Scheduler {
                 }
                 break;
             case RR:    //Round robin
-                try {
-                    processRunning.acquire();
-                    processIDs.remove(processIDs.indexOf(processID));
-                    processRunning.release();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                processQueue.remove(processID);
+                runningProcess = false;
+                if(!processQueue.isEmpty()) {
+                    int id = processQueue.element(); // retrieve the head of the queue
+                    Thread thread = this.sleeper(quantum, id);
+                    thread.start();
+                    runningProcess = true;
                 }
+
                 break;
             case SPN:   //Shortest process next
                 priorityQueue.removeIf(p -> p == processID);
